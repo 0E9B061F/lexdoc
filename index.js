@@ -1,6 +1,6 @@
 'use strict'
 
-const { Wrapper } = require('./lib/lexdoc.js')
+const { Lexdoc } = require('./lib/lexdoc.js')
 
 
-module.exports = new Wrapper()
+module.exports = new Lexdoc()
