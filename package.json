@@ -1,0 +1,21 @@
+{
+  "name": "lexdoc",
+  "version": "0.1.0",
+  "description": "A library to simplify lexer definition using chevrotain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "lexer",
+    "parser",
+    "token",
+    "chevrotain"
+  ],
+  "author": "Abacus Lever",
+  "license": "ISC",
+  "dependencies": {
+    "chevrotain": "^3.2.1",
+    "xregexp": "^4.1.1"
+  }
+}
