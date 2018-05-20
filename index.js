@@ -4,6 +4,8 @@ const chevrotain = require('chevrotain')
 const Lexer = chevrotain.Lexer
 const XRegExp = require('xregexp')
 
+const { BuildError } = require('./lib/errors.js')
+
 
 const modes = {}
 let defaultMode
@@ -49,7 +51,7 @@ class TokenSet {
       const name = pair[0]
       const list = pair[1]
       list.forEach((dep)=> {
-        if (!this.docs[dep]) throw Error(`Invalid dependency: ${dep}`)
+        if (!this.docs[dep]) throw new DependencyError(`Invalid dependency: ${dep}`)
       })
     })
   }
@@ -102,7 +104,7 @@ class TokenSet {
     if (path.includes(name)) {
       path.push(name)
       path = path.join(' -> ')
-      throw Error(`Dependency loop detected in token document:\n       ${path}\n`)
+      throw new DependencyError(`Dependency loop detected in token document:\n       ${path}\n`)
     }
   }
 
@@ -136,7 +138,7 @@ function lexerError(errors) {
 
 // Throw if the lexer reported errors
 function lexerErrorCheck(errors) {
-  if (errors.length) throw Error(lexerError(errors))
+  if (errors.length) throw new LexerError(lexerError(errors))
 }
 
 function mode(name, def) {
@@ -171,8 +173,8 @@ function createResult(order) {
 }
 
 function buildSingleMode(def) {
-  if (Object.keys(modes).length > 0) throw Error('Already defined modes!')
-  if (!Object.keys(def).length) throw Error('Must specify at least one token!')
+  if (Object.keys(modes).length > 0) throw new BuildError('Already defined modes!')
+  if (!Object.keys(def).length) throw new BuildError('Must specify at least one token!')
 
   const ts = new TokenSet(def)
   const result = createResult(ts.order)
@@ -181,8 +183,8 @@ function buildSingleMode(def) {
 }
 
 function buildMultiMode() {
-  if (Object.keys(modes).length < 2) throw Error('Must have two or more modes!')
-  if (!defaultMode) throw Error('Must set a default mode!')
+  if (Object.keys(modes).length < 2) throw new BuildError('Must have two or more modes!')
+  if (!defaultMode) throw new BuildError('Must set a default mode!')
 
   const result = createResult(multiOrder())
   multiSet(result)
@@ -191,7 +193,7 @@ function buildMultiMode() {
 
 function build(def) {
   if (!def && !Object.keys(modes).length) {
-    throw Error('Must specify a token definition object!')
+    throw new BuildError('Must specify a token definition object!')
   }
   if (def) {
     return buildSingleMode(def)

@@ -1,14 +1,19 @@
+'use strict'
+
+const Errors = require('../lib/errors.js')
+
+
 describe('lexdoc', function() {
 
   it('should not build without a token definition', function() {
     const LD = require('../index.js')
-    expect(LD.build).toThrow()
+    expect(LD.build).toThrowError(Errors.BuildError)
   })
 
   it('should not accept an empty token definition', function() {
     const LD = require('../index.js')
     function emptydef() { LD.build({}) }
-    expect(emptydef).toThrow()
+    expect(emptydef).toThrowError(Errors.BuildError)
   })
 
 })
