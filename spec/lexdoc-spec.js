@@ -109,6 +109,28 @@ describe('lexdoc', function() {
         expect(lexer.instance.modes.length).toEqual(number)
       })
     })
+
+    it('should build and expose tokens', function() {
+      LD.mode('ModeA', {
+        TA: {pattern: 'A', line_breaks: true},
+        TB: /B/
+      })
+      LD.mode('ModeB', {
+        TC: {pattern: 'C', line_breaks: true},
+        TD: /D/
+      })
+      LD.setDefault('ModeA')
+      const lexer = LD.build()
+      expect(Object.keys(lexer.tokens).length).toEqual(4)
+      expect(lexer.tokens.TA.tokenName).toEqual('TA')
+      expect(lexer.tokens.TB.tokenName).toEqual('TB')
+      expect(lexer.tokens.TC.tokenName).toEqual('TC')
+      expect(lexer.tokens.TD.tokenName).toEqual('TD')
+      expect(lexer.tokens.TA.PATTERN).toEqual('A')
+      expect(lexer.tokens.TB.PATTERN).toEqual(/B/)
+      expect(lexer.tokens.TC.PATTERN).toEqual('C')
+      expect(lexer.tokens.TD.PATTERN).toEqual(/D/)
+    })
   })
 
   describe('token set', function() {
