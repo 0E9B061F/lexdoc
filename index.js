@@ -2,7 +2,7 @@
 
 const chevrotain = require('chevrotain')
 const Lexer = chevrotain.Lexer
-const XRegExp = require("xregexp")
+const XRegExp = require('xregexp')
 
 
 const modes = {}
