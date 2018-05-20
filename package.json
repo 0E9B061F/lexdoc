@@ -17,5 +17,8 @@
   "dependencies": {
     "chevrotain": "^3.2.1",
     "xregexp": "^4.1.1"
+  },
+  "devDependencies": {
+    "jasmine": "^3.1.0"
   }
 }

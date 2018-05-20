@@ -148,7 +148,8 @@ function set_default(name) {
 }
 
 function build_single_mode(def) {
-  if (Object.keys(modes).length) throw Error('Already defined modes!')
+  if (Object.keys(modes).length > 0) throw Error('Already defined modes!')
+  if (!Object.keys(def).length) throw Error('Must specify at least one token!')
   const ts = new TokenSet(def)
   const lexer = new chevrotain.Lexer(ts.order)
   const result = function(text) {
@@ -161,7 +162,7 @@ function build_single_mode(def) {
 }
 
 function build_multi_mode() {
-  if (!Object.keys(modes).length > 1) throw Error('Must have two or more modes!')
+  if (Object.keys(modes).length < 2) throw Error('Must have two or more modes!')
   if (!default_mode) throw Error('Must set a default mode!')
   const order = {defaultMode: default_mode, modes: {}}
   Object.keys(modes).forEach((name)=> {
@@ -180,6 +181,9 @@ function build_multi_mode() {
 }
 
 function build(def) {
+  if (!def && !Object.keys(modes).length) {
+    throw Error('Must specify a token definition object!')
+  }
   if (def) {
     return build_single_mode(def)
   } else {
