@@ -52,6 +52,16 @@ describe('lexdoc', function() {
       expect(invalidDefault).toThrowError(Errors.BuildError)
     })
 
+    it('should reject modes definitions with no tokens', function() {
+      function emptyMode() {
+        LD.setDefault('A')
+        LD.mode('A', { TokenA: {pattern: 'A', line_breaks: true} })
+        LD.mode('B', {})
+        LD.build()
+      }
+      expect(emptyMode).toThrowError(Errors.BuildError)
+    })
+
     it('should support multiple modes', function() {
       const numbers = [2,3,4,10,20]
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
