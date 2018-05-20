@@ -147,16 +147,35 @@ function setDefault(name) {
   defaultMode = name
 }
 
-function buildSingleMode(def) {
-  if (Object.keys(modes).length > 0) throw Error('Already defined modes!')
-  if (!Object.keys(def).length) throw Error('Must specify at least one token!')
-  const ts = new TokenSet(def)
-  const lexer = new chevrotain.Lexer(ts.order)
+function multiOrder() {
+  const merged = {defaultMode, modes: {}}
+  Object.keys(modes).forEach((name)=> {
+    merged.modes[name] = modes[name].order
+  })
+  return merged
+}
+
+function multiSet(on) {
+  Object.keys(modes).forEach((name)=> modes[name].setCreated(on) )
+  return on
+}
+
+function createResult(order) {
+  const lexer = new chevrotain.Lexer(order)
   const result = function(text) {
     const lexed = lexer.tokenize(text)
     lexerErrorCheck(lexed.errors)
     return lexed
   }
+  return result
+}
+
+function buildSingleMode(def) {
+  if (Object.keys(modes).length > 0) throw Error('Already defined modes!')
+  if (!Object.keys(def).length) throw Error('Must specify at least one token!')
+
+  const ts = new TokenSet(def)
+  const result = createResult(ts.order)
   ts.setCreated(result)
   return result
 }
@@ -164,19 +183,9 @@ function buildSingleMode(def) {
 function buildMultiMode() {
   if (Object.keys(modes).length < 2) throw Error('Must have two or more modes!')
   if (!defaultMode) throw Error('Must set a default mode!')
-  const order = {defaultMode, modes: {}}
-  Object.keys(modes).forEach((name)=> {
-    order.modes[name] = modes[name].order
-  })
-  const lexer = new chevrotain.Lexer(order)
-  const result = function(text) {
-    const lexed = lexer.tokenize(text)
-    lexerErrorCheck(lexed.errors)
-    return lexed
-  }
-  Object.keys(modes).forEach((name)=> {
-    modes[name].setCreated(result)
-  })
+
+  const result = createResult(multiOrder())
+  multiSet(result)
   return result
 }
 
