@@ -1,7 +1,7 @@
 'use strict'
 
 const Errors = require('../lib/errors.js')
-const { Lexdoc, Fulldoc } = require('../lib/lexdoc.js')
+const { Lexdoc } = require('../lib/lexdoc.js')
 const XRegExp = require('xregexp')
 
 
@@ -34,7 +34,7 @@ describe('Lexdoc', function() {
 
     it('should build and expose tokens', function() {
       const lexer = LD.build({
-        TA: {pattern: 'A', line_breaks: true},
+        TA: { pattern: 'A', line_breaks: true },
         TB: /B/,
         TC: 'C'
       })
@@ -49,11 +49,11 @@ describe('Lexdoc', function() {
 
     it('should correctly resolve and set token references', function() {
       const lexer = LD.build({
-        TA: {pattern: 'A', line_breaks: true},
+        TA: { pattern: 'A', line_breaks: true },
         TB: LD.CATEGORY,
         TC: LD.CATEGORY,
-        TD: {pattern: 'C', categories: 'TB TC'},
-        TE: {pattern: /E/, longer_alt: 'TF'},
+        TD: { pattern: 'C', categories: 'TB TC' },
+        TE: { pattern: /E/, longer_alt: 'TF' },
         TF: /F/
       })
       expect(Object.keys(lexer.tokens).length).toEqual(6)
@@ -75,7 +75,7 @@ describe('Lexdoc', function() {
 
     it('should ensure that the default mode is valid', function() {
       function invalidDefault() {
-        LD.mode('A', { TokenA: {pattern: 'A', line_breaks: true} })
+        LD.mode('A', { TokenA: { pattern: 'A', line_breaks: true }})
         LD.mode('B', { TokenB: 'B' })
         LD.setDefault('C')
         LD.build()
@@ -86,7 +86,7 @@ describe('Lexdoc', function() {
     it('should reject modes definitions with no tokens', function() {
       function emptyMode() {
         LD.setDefault('A')
-        LD.mode('A', { TokenA: {pattern: 'A', line_breaks: true} })
+        LD.mode('A', { TokenA: { pattern: 'A', line_breaks: true }})
         LD.mode('B', {})
         LD.build()
       }
@@ -102,7 +102,7 @@ describe('Lexdoc', function() {
         for (let count = 0; count < number; count++) {
           const letter = letters[count]
           const doc = {}
-          doc[`Token${letter}`] = {pattern: letter, line_breaks: true}
+          doc[`Token${letter}`] = { pattern: letter, line_breaks: true }
           LD.mode(letter, doc)
         }
         const lexer = LD.build()
@@ -113,11 +113,11 @@ describe('Lexdoc', function() {
 
     it('should build and expose tokens', function() {
       LD.mode('ModeA', {
-        TA: {pattern: 'A', line_breaks: true},
+        TA: { pattern: 'A', line_breaks: true },
         TB: /B/
       })
       LD.mode('ModeB', {
-        TC: {pattern: 'C', line_breaks: true},
+        TC: { pattern: 'C', line_breaks: true },
         TD: /D/
       })
       LD.setDefault('ModeA')
@@ -138,16 +138,16 @@ describe('Lexdoc', function() {
     it('should detect dependency loops', function() {
       function catloop() {
         LD.build({
-          Foo: {pattern: LD.CATEGORY, categories: 'Bar'},
-          Bar: {pattern: LD.CATEGORY, categories: 'Baz'},
-          Baz: {pattern: LD.CATEGORY, categories: 'Foo'}
+          Foo: { pattern: LD.CATEGORY, categories: 'Bar' },
+          Bar: { pattern: LD.CATEGORY, categories: 'Baz' },
+          Baz: { pattern: LD.CATEGORY, categories: 'Foo' }
         })
       }
       function altloop() {
         LD.build({
-          Foo: {pattern: 'foo', longer_alt: 'Bar'},
-          Bar: {pattern: 'bar', longer_alt: 'Baz'},
-          Baz: {pattern: 'baz', longer_alt: 'Foo'}
+          Foo: { pattern: 'foo', longer_alt: 'Bar' },
+          Bar: { pattern: 'bar', longer_alt: 'Baz' },
+          Baz: { pattern: 'baz', longer_alt: 'Foo' }
         })
       }
       expect(catloop).toThrowError(Errors.DependencyError)
@@ -159,11 +159,11 @@ describe('Lexdoc', function() {
         LD.build({
           Foo: LD.CATEGORY,
           Bar: LD.CATEGORY,
-          Bat: {pattern: 'bat', categories: 'Foo Bar Baz'}
+          Bat: { pattern: 'bat', categories: 'Foo Bar Baz' }
         })
       }
       function missingalt() {
-        LD.build({ Foo: {pattern: 'foo', longer_alt: 'Bar'} })
+        LD.build({ Foo: { pattern: 'foo', longer_alt: 'Bar' }})
       }
       expect(missingcat).toThrowError(Errors.DependencyError)
       expect(missingalt).toThrowError(Errors.DependencyError)
@@ -172,7 +172,7 @@ describe('Lexdoc', function() {
 
   describe('Fragment DSL', function() {
     it('should correctly define fragments', function() {
-      LD.fragments({ A: 'foo', B: 'bar'})
+      LD.fragments({ A: 'foo', B: 'bar' })
       LD.fragment('C', 'baz')
       expect(Object.keys(LD.__FD.fragmentList).length).toEqual(3)
       Object.entries(LD.__FD.fragmentList).forEach((pair)=> {
@@ -181,7 +181,7 @@ describe('Lexdoc', function() {
     })
 
     it('should correctly reference fragments using the pattern method', function() {
-      LD.fragments({ A: 'foo', B: 'bar'})
+      LD.fragments({ A: 'foo', B: 'bar' })
       const pat = LD.pattern('1{{A}}2{{B}}3')
       expect(pat instanceof XRegExp).toBe(true)
       expect(pat.test('1foo2bar3')).toBe(true)
@@ -189,9 +189,9 @@ describe('Lexdoc', function() {
     })
 
     it('should work correctly in token definitions', function() {
-      LD.fragments({ A: 'foo', B: 'bar'})
+      LD.fragments({ A: 'foo', B: 'bar' })
       const lexer = LD.build({
-        TA: {pattern: LD.pattern('1{{A}}2{{B}}3'), line_breaks: true},
+        TA: { pattern: LD.pattern('1{{A}}2{{B}}3'), line_breaks: true },
         TB: LD.pattern('{{A}}{{B}}baz')
       })
       expect(lexer.tokens.TA.PATTERN).toEqual(LD.pattern('1{{A}}2{{B}}3'))
@@ -200,7 +200,6 @@ describe('Lexdoc', function() {
       expect(lexer.tokens.TB.PATTERN.test('foobarbaz')).toBe(true)
     })
   })
-
 })
 
 describe('JSON example', function() {
@@ -209,7 +208,7 @@ describe('JSON example', function() {
     const path = require('path')
     const json = require('../example/json/json.js')
     const filePath = path.join(__dirname, '../example/json/file.json')
-    const file = fs.readFileSync(filePath, {encoding: 'utf-8'})
+    const file = fs.readFileSync(filePath, { encoding: 'utf-8' })
     const out = json(file)
 
     expect(out).toEqual({

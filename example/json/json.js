@@ -7,9 +7,9 @@ const LD = require('../../index.js')
 
 const JsonLexer = LD.build({
   WhiteSpace: {
-      pattern: /[ \t\n\r]+/,
-      group: LD.SKIPPED,
-      line_breaks: true
+    pattern: /[ \t\n\r]+/,
+    group: LD.SKIPPED,
+    line_breaks: true
   },
 
   NumberLiteral: /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/,
@@ -34,7 +34,7 @@ class JsonParser extends Parser {
 
     const $ = this
 
-    $.RULE("json", () => {
+    $.RULE('json', () => {
       let doc
       $.OR([
         { ALT: () => doc = $.SUBRULE($.object) },
@@ -43,7 +43,7 @@ class JsonParser extends Parser {
       return doc
     })
 
-    $.RULE("object", () => {
+    $.RULE('object', () => {
       const obj = {}
       let pair
       $.CONSUME(JsonLexer.tokens.LCurly)
@@ -58,7 +58,7 @@ class JsonParser extends Parser {
       return obj
     })
 
-    $.RULE("objectItem", () => {
+    $.RULE('objectItem', () => {
       let name = $.CONSUME(JsonLexer.tokens.StringLiteral).image
       name = name.substr(1, name.length-2)
       $.CONSUME(JsonLexer.tokens.Colon)
@@ -66,7 +66,7 @@ class JsonParser extends Parser {
       return [name, val]
     })
 
-    $.RULE("array", () => {
+    $.RULE('array', () => {
       const list = []
       let v
       $.CONSUME(JsonLexer.tokens.LSquare)
@@ -83,31 +83,31 @@ class JsonParser extends Parser {
       return list
     })
 
-    $.RULE("value", () => {
+    $.RULE('value', () => {
       let val
       $.OR([
         { ALT: () => {
           val = $.CONSUME(JsonLexer.tokens.StringLiteral).image
           val = val.substr(1, val.length-2)
-        }},
+        } },
         { ALT: () => {
           val = $.CONSUME(JsonLexer.tokens.NumberLiteral).image
           val = Number(val)
-        }},
+        } },
         { ALT: () => val = $.SUBRULE($.object) },
         { ALT: () => val = $.SUBRULE($.array) },
         { ALT: () => {
           $.CONSUME(JsonLexer.tokens.True)
           val = true
-        }},
+        } },
         { ALT: () => {
           $.CONSUME(JsonLexer.tokens.False)
           val = false
-        }},
+        } },
         { ALT: () => {
           $.CONSUME(JsonLexer.tokens.Null)
           val = null
-        }}
+        } }
       ])
       return val
     })
