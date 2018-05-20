@@ -2,6 +2,7 @@
 
 const Errors = require('../lib/errors.js')
 const { Lexdoc, Fulldoc } = require('../lib/lexdoc.js')
+const XRegExp = require('xregexp')
 
 
 describe('Lexdoc', function() {
@@ -166,6 +167,37 @@ describe('Lexdoc', function() {
       }
       expect(missingcat).toThrowError(Errors.DependencyError)
       expect(missingalt).toThrowError(Errors.DependencyError)
+    })
+  })
+
+  describe('Fragment DSL', function() {
+    it('should correctly define fragments', function() {
+      LD.fragments({ A: 'foo', B: 'bar'})
+      LD.fragment('C', 'baz')
+      expect(Object.keys(LD.__FD.fragmentList).length).toEqual(3)
+      Object.entries(LD.__FD.fragmentList).forEach((pair)=> {
+        expect(pair[1] instanceof XRegExp).toBe(true)
+      })
+    })
+
+    it('should correctly reference fragments using the pattern method', function() {
+      LD.fragments({ A: 'foo', B: 'bar'})
+      const pat = LD.pattern('1{{A}}2{{B}}3')
+      expect(pat instanceof XRegExp).toBe(true)
+      expect(pat.test('1foo2bar3')).toBe(true)
+      expect(pat.test('1X2Y3')).toBe(false)
+    })
+
+    it('should work correctly in token definitions', function() {
+      LD.fragments({ A: 'foo', B: 'bar'})
+      const lexer = LD.build({
+        TA: {pattern: LD.pattern('1{{A}}2{{B}}3'), line_breaks: true},
+        TB: LD.pattern('{{A}}{{B}}baz')
+      })
+      expect(lexer.tokens.TA.PATTERN).toEqual(LD.pattern('1{{A}}2{{B}}3'))
+      expect(lexer.tokens.TB.PATTERN).toEqual(LD.pattern('{{A}}{{B}}baz'))
+      expect(lexer.tokens.TA.PATTERN.test('1foo2bar3')).toBe(true)
+      expect(lexer.tokens.TB.PATTERN.test('foobarbaz')).toBe(true)
     })
   })
 
