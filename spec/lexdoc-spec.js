@@ -30,6 +30,36 @@ describe('lexdoc', function() {
       }
       expect(mixedbuild).toThrowError(Errors.BuildError)
     })
+
+    it('should build and expose tokens', function() {
+      const lexer = LD.build({
+        TA: {pattern: 'A', line_breaks: true},
+        TB: /B/,
+        TC: 'C'
+      })
+      expect(Object.keys(lexer.tokens).length).toEqual(3)
+      expect(lexer.tokens.TA.tokenName).toEqual('TA')
+      expect(lexer.tokens.TB.tokenName).toEqual('TB')
+      expect(lexer.tokens.TC.tokenName).toEqual('TC')
+      expect(lexer.tokens.TA.PATTERN).toEqual('A')
+      expect(lexer.tokens.TB.PATTERN).toEqual(/B/)
+      expect(lexer.tokens.TC.PATTERN).toEqual('C')
+    })
+
+    it('should correctly resolve and set token references', function() {
+      const lexer = LD.build({
+        TA: {pattern: 'A', line_breaks: true},
+        TB: LD.CATEGORY,
+        TC: LD.CATEGORY,
+        TD: {pattern: 'C', categories: 'TB TC'},
+        TE: {pattern: /E/, longer_alt: 'TF'},
+        TF: /F/
+      })
+      expect(Object.keys(lexer.tokens).length).toEqual(6)
+      expect(lexer.tokens.TD.CATEGORIES.length).toEqual(2)
+      expect(lexer.tokens.TD.CATEGORIES).toEqual([lexer.tokens.TB, lexer.tokens.TC])
+      expect(lexer.tokens.TE.LONGER_ALT).toBe(lexer.tokens.TF)
+    })
   })
 
   describe('multi-mode', function() {
