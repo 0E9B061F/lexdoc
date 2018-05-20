@@ -4,14 +4,14 @@ const Errors = require('../lib/errors.js')
 const { Lexdoc, Fulldoc } = require('../lib/lexdoc.js')
 
 
-describe('lexdoc', function() {
+describe('Lexdoc', function() {
   let LD
 
   beforeEach(function() {
     LD = new Lexdoc()
   })
 
-  describe('single mode', function() {
+  describe('Single mode', function() {
     it('should not build without a token definition', function() {
       function noarg() { LD.build() }
       expect(noarg).toThrowError(Errors.BuildError)
@@ -62,7 +62,7 @@ describe('lexdoc', function() {
     })
   })
 
-  describe('multi-mode', function() {
+  describe('Multi-mode', function() {
     it('should require at least two modes', function() {
       function onemode() {
         LD.mode('A', { TokenA: 'A' })
@@ -133,7 +133,7 @@ describe('lexdoc', function() {
     })
   })
 
-  describe('token set', function() {
+  describe('TokenSet', function() {
     it('should detect dependency loops', function() {
       function catloop() {
         LD.build({
@@ -171,7 +171,7 @@ describe('lexdoc', function() {
 
 })
 
-describe('json example', function() {
+describe('JSON example', function() {
   it('should parse correctly', function() {
     const fs = require('fs')
     const path = require('path')
