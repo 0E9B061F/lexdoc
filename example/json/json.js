@@ -30,7 +30,7 @@ const JsonLexer = LD.build({
 
 class JsonParser extends Parser {
   constructor(input, config) {
-    super(input, JsonLexer, config)
+    super(input, JsonLexer.tokens, config)
 
     const $ = this
 
@@ -46,22 +46,22 @@ class JsonParser extends Parser {
     $.RULE("object", () => {
       const obj = {}
       let pair
-      $.CONSUME(JsonLexer.LCurly)
+      $.CONSUME(JsonLexer.tokens.LCurly)
       $.MANY_SEP({
-        SEP: JsonLexer.Comma,
+        SEP: JsonLexer.tokens.Comma,
         DEF: ()=> {
           pair = $.SUBRULE($.objectItem)
           obj[pair[0]] = pair[1]
         }
       })
-      $.CONSUME(JsonLexer.RCurly)
+      $.CONSUME(JsonLexer.tokens.RCurly)
       return obj
     })
 
     $.RULE("objectItem", () => {
-      let name = $.CONSUME(JsonLexer.StringLiteral).image
+      let name = $.CONSUME(JsonLexer.tokens.StringLiteral).image
       name = name.substr(1, name.length-2)
-      $.CONSUME(JsonLexer.Colon)
+      $.CONSUME(JsonLexer.tokens.Colon)
       const val = $.SUBRULE($.value)
       return [name, val]
     })
@@ -69,17 +69,17 @@ class JsonParser extends Parser {
     $.RULE("array", () => {
       const list = []
       let v
-      $.CONSUME(JsonLexer.LSquare)
+      $.CONSUME(JsonLexer.tokens.LSquare)
       $.OPTION(() => {
         v = $.SUBRULE($.value)
         list.push(v)
         $.MANY(() => {
-          $.CONSUME(JsonLexer.Comma)
+          $.CONSUME(JsonLexer.tokens.Comma)
           v = $.SUBRULE2($.value)
           list.push(v)
         })
       })
-      $.CONSUME(JsonLexer.RSquare)
+      $.CONSUME(JsonLexer.tokens.RSquare)
       return list
     })
 
@@ -87,25 +87,25 @@ class JsonParser extends Parser {
       let val
       $.OR([
         { ALT: () => {
-          val = $.CONSUME(JsonLexer.StringLiteral).image
+          val = $.CONSUME(JsonLexer.tokens.StringLiteral).image
           val = val.substr(1, val.length-2)
         }},
         { ALT: () => {
-          val = $.CONSUME(JsonLexer.NumberLiteral).image
+          val = $.CONSUME(JsonLexer.tokens.NumberLiteral).image
           val = Number(val)
         }},
         { ALT: () => val = $.SUBRULE($.object) },
         { ALT: () => val = $.SUBRULE($.array) },
         { ALT: () => {
-          $.CONSUME(JsonLexer.True)
+          $.CONSUME(JsonLexer.tokens.True)
           val = true
         }},
         { ALT: () => {
-          $.CONSUME(JsonLexer.False)
+          $.CONSUME(JsonLexer.tokens.False)
           val = false
         }},
         { ALT: () => {
-          $.CONSUME(JsonLexer.Null)
+          $.CONSUME(JsonLexer.tokens.Null)
           val = null
         }}
       ])
@@ -119,7 +119,7 @@ class JsonParser extends Parser {
 const parser = new JsonParser([])
 
 module.exports = function(text) {
-  const lexResult = JsonLexer(text)
+  const lexResult = JsonLexer.lex(text)
   // setting a new input will RESET the parser instance's state.
   parser.input = lexResult.tokens
   // any top level rule may be used as an entry point

@@ -75,7 +75,8 @@ describe('lexdoc', function() {
           LD.mode(letter, doc)
         }
         const lexer = LD.build()
-        expect(Object.keys(lexer).length).toEqual(number)
+        expect(Object.keys(lexer.tokens).length).toEqual(number)
+        expect(lexer.instance.modes.length).toEqual(number)
       })
     })
   })
