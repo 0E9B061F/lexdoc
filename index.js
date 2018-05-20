@@ -4,7 +4,7 @@ const chevrotain = require('chevrotain')
 const Lexer = chevrotain.Lexer
 const XRegExp = require('xregexp')
 
-const { BuildError } = require('./lib/errors.js')
+const { BuildError, DependencyError, LexerError } = require('./lib/errors.js')
 
 
 const modes = {}
