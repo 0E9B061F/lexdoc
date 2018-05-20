@@ -30,6 +30,42 @@ describe('lexdoc', function() {
     expect(mixedbuild).toThrowError(Errors.BuildError)
   })
 
+  it('should require at least two modes', function() {
+    function onemode() {
+      LD.mode('A', { TokenA: 'A' })
+      LD.setDefault('A')
+      LD.build()
+    }
+    expect(onemode).toThrowError(Errors.BuildError)
+  })
+
+  it('should ensure that the default mode is valid', function() {
+    function invalidDefault() {
+      LD.mode('A', { TokenA: {pattern: 'A', line_breaks: true} })
+      LD.mode('B', { TokenB: 'B' })
+      LD.setDefault('C')
+      LD.build()
+    }
+    expect(invalidDefault).toThrowError(Errors.BuildError)
+  })
+
+  it('should support multiple modes', function() {
+    const numbers = [2,3,4,10,20]
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    numbers.forEach((number)=> {
+      LD = new Lexdoc()
+      LD.setDefault('A')
+      for (let count = 0; count < number; count++) {
+        const letter = letters[count]
+        const doc = {}
+        doc[`Token${letter}`] = {pattern: letter, line_breaks: true}
+        LD.mode(letter, doc)
+      }
+      const lexer = LD.build()
+      expect(Object.keys(lexer).length).toEqual(number)
+    })
+  })
+
   it('should detect dependency loops', function() {
     function catloop() {
       LD.build({
