@@ -1,17 +1,19 @@
 'use strict'
 
 const Errors = require('../lib/errors.js')
+const { Lexdoc, Wrapper } = require('../lib/lexdoc.js')
 
 
 describe('lexdoc', function() {
   let LD
 
   beforeEach(function() {
-    LD = require('../index.js')
+    LD = new Wrapper()
   })
 
   it('should not build without a token definition', function() {
-    expect(LD.build).toThrowError(Errors.BuildError)
+    function noarg() { LD.build() }
+    expect(noarg).toThrowError(Errors.BuildError)
   })
 
   it('should not accept an empty token definition', function() {
