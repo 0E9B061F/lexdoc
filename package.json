@@ -1,6 +1,6 @@
 {
   "name": "lexdoc",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A library to simplify lexer definition using chevrotain",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,11 @@
     "token",
     "chevrotain"
   ],
-  "author": "Abacus Lever",
-  "license": "ISC",
+  "author": {
+    "name": "Abacus Lever",
+    "email": "aetherised@gmail.com"
+  },
+  "license": "MIT",
   "dependencies": {
     "chevrotain": "^3.2.1",
     "xregexp": "^4.1.1"
