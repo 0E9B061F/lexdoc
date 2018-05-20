@@ -6,11 +6,11 @@ const XRegExp = require('xregexp')
 
 
 const modes = {}
-let default_mode
-const fragment_list = {}
+let defaultMode
+const fragmentList = {}
 
 function fragment(name, def) {
-  fragment_list[name] = XRegExp.build(def, fragment_list)
+  fragmentList[name] = XRegExp.build(def, fragmentList)
 }
 
 function fragments(doc) {
@@ -18,7 +18,7 @@ function fragments(doc) {
 }
 
 function pattern(def, flags) {
-  return XRegExp.build(def, fragment_list, flags)
+  return XRegExp.build(def, fragmentList, flags)
 }
 
 
@@ -29,19 +29,19 @@ class TokenSet {
     this.deplist = {}
     this.created = {}
 
-    this.digest_definition(def)
+    this.digestDefinition(def)
     Object.keys(this.deplist).forEach((name)=> this.resolve(name))
     this.order = this.order.map((name)=> this.created[name])
   }
 
   // Transform a given token definition document for further processing
-  digest_definition(def) {
+  digestDefinition(def) {
     Object.entries(def).forEach((pair)=> {
       const name = pair[0]
       let doc = pair[1]
       if (doc instanceof RegExp || typeof(doc) === 'string') doc = {pattern: doc}
       doc.name = name
-      this.record_dependencies(doc)
+      this.recordDependencies(doc)
       this.docs[name] = doc
       this.order.push(name)
     })
@@ -56,7 +56,7 @@ class TokenSet {
 
   // Note any dependencies that exist in the given token definition. These will be
   // traversed and resolved before the given token is created.
-  record_dependencies(doc) {
+  recordDependencies(doc) {
     const deps = []
     if (doc.longer_alt) deps.push(doc.longer_alt)
     if (doc.categories) {
@@ -71,21 +71,21 @@ class TokenSet {
   resolve(names, path=[]) {
     if (!Array.isArray(names)) names = [names]
     names.forEach((name)=> {
-      this.infinite_loop_check(name, path)
+      this.infiniteLoopCheck(name, path)
       if (!this.created[name]) {
         const deps = this.deplist[name]
         if (deps.length) {
           path.push(name)
           this.resolve(deps, path)
         }
-        this.create_token(name)
+        this.createToken(name)
       }
     })
   }
 
   // Create and store a token object from the stored token definition with the
   // given name
-  create_token(name) {
+  createToken(name) {
     const doc = this.docs[name]
     if (doc.longer_alt) doc.longer_alt = this.created[doc.longer_alt]
     if (doc.categories) {
@@ -98,7 +98,7 @@ class TokenSet {
   }
 
   // Check for infinite loops in dependency resolution
-  infinite_loop_check(name, path) {
+  infiniteLoopCheck(name, path) {
     if (path.includes(name)) {
       path.push(name)
       path = path.join(' -> ')
@@ -106,7 +106,7 @@ class TokenSet {
     }
   }
 
-  set_created(on) {
+  setCreated(on) {
     Object.keys(this.created).forEach((name)=> on[name] = this.created[name])
     return on
   }
@@ -114,7 +114,7 @@ class TokenSet {
 
 
 // Format lexer error messages for human consumption
-function lexer_error(errors) {
+function lexerError(errors) {
   let explanation
   if (errors.length > 1) {
     explanation = 'Encountered problems while lexing input:'
@@ -135,47 +135,47 @@ function lexer_error(errors) {
 }
 
 // Throw if the lexer reported errors
-function lexer_error_check(errors) {
-  if (errors.length) throw Error(lexer_error(errors))
+function lexerErrorCheck(errors) {
+  if (errors.length) throw Error(lexerError(errors))
 }
 
 function mode(name, def) {
   modes[name] = new TokenSet(def)
 }
 
-function set_default(name) {
-  default_mode = name
+function setDefault(name) {
+  defaultMode = name
 }
 
-function build_single_mode(def) {
+function buildSingleMode(def) {
   if (Object.keys(modes).length > 0) throw Error('Already defined modes!')
   if (!Object.keys(def).length) throw Error('Must specify at least one token!')
   const ts = new TokenSet(def)
   const lexer = new chevrotain.Lexer(ts.order)
   const result = function(text) {
     const lexed = lexer.tokenize(text)
-    lexer_error_check(lexed.errors)
+    lexerErrorCheck(lexed.errors)
     return lexed
   }
-  ts.set_created(result)
+  ts.setCreated(result)
   return result
 }
 
-function build_multi_mode() {
+function buildMultiMode() {
   if (Object.keys(modes).length < 2) throw Error('Must have two or more modes!')
-  if (!default_mode) throw Error('Must set a default mode!')
-  const order = {defaultMode: default_mode, modes: {}}
+  if (!defaultMode) throw Error('Must set a default mode!')
+  const order = {defaultMode, modes: {}}
   Object.keys(modes).forEach((name)=> {
     order.modes[name] = modes[name].order
   })
   const lexer = new chevrotain.Lexer(order)
   const result = function(text) {
     const lexed = lexer.tokenize(text)
-    lexer_error_check(lexed.errors)
+    lexerErrorCheck(lexed.errors)
     return lexed
   }
   Object.keys(modes).forEach((name)=> {
-    modes[name].set_created(result)
+    modes[name].setCreated(result)
   })
   return result
 }
@@ -185,14 +185,14 @@ function build(def) {
     throw Error('Must specify a token definition object!')
   }
   if (def) {
-    return build_single_mode(def)
+    return buildSingleMode(def)
   } else {
-    return build_multi_mode()
+    return buildMultiMode()
   }
 }
 
 module.exports = {
-  mode, set_default, build,
+  mode, setDefault, build,
   fragment, fragments, pattern,
   CATEGORY: Lexer.NA,
   SKIPPED: Lexer.SKIPPED
