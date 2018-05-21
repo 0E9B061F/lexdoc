@@ -1,5 +1,10 @@
 'use strict'
-// Adapted from the Chevrotain JSON example
+// Adapted from the Chevrotain JSON example to use Lexdoc and expanded with
+// semantic actions to create a fully-functional parser.
+// Chevrotain is distributed under the Apache License 2.0:
+//   <https://github.com/SAP/chevrotain/blob/master/LICENSE.txt>
+//   <https://github.com/SAP/chevrotain/blob/master/NOTICE.txt>
+//   Chevrotain is copyright (c) 2015-2018 SAP SE or an SAP affiliate company.
 
 const { Parser } = require('chevrotain')
 const LD = require('../../index.js')
