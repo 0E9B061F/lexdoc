@@ -1,4 +1,6 @@
-Simplified token definition and lexer creation library for use with Chevrotain.
+# lexdoc
+
+Simplified token definition and lexer creation library for use with [Chevrotain][chevrotain].
 
 Example:
 
@@ -46,7 +48,7 @@ npm install lexdoc
 ## Shortened Definitions for Simple Tokens
 
 Tokens which have only a pattern and no other properties can be defined using
-only their pattern, simplifying many token definitions.
+only their pattern, simplifying many token definitions:
 
 ```js
 // Using the Chevrotain #createToken API:
@@ -75,7 +77,7 @@ representing the token's name, rather than a direct reference to the created
 token object. This has two advantages:
 
 * Tokens can be referenced before they are defined.
-* Tokens are defined in order of precedence, rather than in order of dependence,
+* Tokens are defined in order of lexing precedence, rather than in order of dependence,
 with their order of precedence then specified separately.
 
 Examples:
@@ -100,7 +102,6 @@ LD.build({
   },                            // space-seperated string. An array of strings
                                 // could also be used.
 
-  // Other identifiers
   Identifier: {
     pattern: /[a-zA-Z][a-zA-Z_]*/,
     categories: 'Value'
@@ -114,7 +115,7 @@ As seen above, the order of precedence when lexing is the same as the order in
 which tokens are defined when using **Lexdoc**. In Chevrotain tokens are defined
 and their order of precedence is then given separately.
 
-Example:
+Using Chevrotain:
 
 ```js
 // Identifier must be defined before Select or From so it can be referenced by
@@ -142,8 +143,8 @@ const tokens = [
 const lexer = new Lexer(tokens)
 ```
 
-In **Lexdoc** token precedence during lexing is the same as the order in which they
-are defined:
+In **Lexdoc** token precedence during lexing is the same as the order in which
+tokens are defined:
 
 ```js
 const lexer = LD.build({
@@ -173,7 +174,9 @@ LD.mode('ModeB', {
   TokenD: 'D'
 })
 
-LD.defaultMode('ModeB')
+LD.defaultMode('ModeB') // The first mode defined is implicitly set to be the
+                        // default mode, but any other mode may be explicitly
+                        // set as the default using #defaultMode
 
 const lexer = LD.build()
 ```
@@ -204,7 +207,7 @@ const lexer = LD.build({
 
 # Full Example
 
-For a full example, see the provided JSON parser example.
+For a full example, see the provided [JSON parser example][json-example].
 
 Here's a stripped-down example showing only the important stuff:
 
@@ -240,3 +243,16 @@ module.exports = function(text) {
   return value
 }
 ```
+
+
+## License
+
+Available under the terms of the [MIT][license] license.
+
+Copyright 2018 [Abacus Lever / aetherised][alever]
+
+
+[alever]:https://github.com/aetherised
+[license]:https://github.com/aetherised/lexdoc/blob/master/LICENSE
+[chevrotain]:https://github.com/SAP/chevrotain
+[json-example]:https://github.com/aetherised/lexdoc/blob/master/example/json/json.js
