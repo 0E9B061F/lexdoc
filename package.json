@@ -1,6 +1,6 @@
 {
   "name": "lexdoc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simplified token definition and lexer creation library for use with Chevrotain.",
   "main": "index.js",
   "files": [
