@@ -247,7 +247,7 @@ module.exports = function(text) {
 
 ## License
 
-Available under the terms of the [MIT][license] license.
+Available under the terms of the [MIT license.][license]
 
 Copyright 2018 [Abacus Lever / aetherised][alever]
 
