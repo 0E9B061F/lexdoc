@@ -5,7 +5,7 @@
 [![dependencies](https://david-dm.org/aetherised/lexdoc.svg?style=flat-square)](https://david-dm.org/onury/jasmine-console-reporter)
 [![maintenance](https://img.shields.io/maintenance/yes/2018.svg?style=flat-square)](https://github.com/aetherised/lexdoc/commits/master)
 
-Simplified token definition and lexer creation library for use with [Chevrotain][chevrotain].
+Simplified token definition and lexer creation library for use with the [Chevrotain][chevrotain] parser building toolkit.
 
 Example:
 
