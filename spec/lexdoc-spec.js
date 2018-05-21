@@ -67,7 +67,7 @@ describe('Lexdoc', function() {
     it('should require at least two modes', function() {
       function onemode() {
         LD.mode('A', { TokenA: 'A' })
-        LD.setDefault('A')
+        LD.defaultMode('A')
         LD.build()
       }
       expect(onemode).toThrowError(Errors.BuildError)
@@ -77,7 +77,7 @@ describe('Lexdoc', function() {
       function invalidDefault() {
         LD.mode('A', { TokenA: { pattern: 'A', line_breaks: true }})
         LD.mode('B', { TokenB: 'B' })
-        LD.setDefault('C')
+        LD.defaultMode('C')
         LD.build()
       }
       expect(invalidDefault).toThrowError(Errors.BuildError)
@@ -85,7 +85,7 @@ describe('Lexdoc', function() {
 
     it('should reject modes definitions with no tokens', function() {
       function emptyMode() {
-        LD.setDefault('A')
+        LD.defaultMode('A')
         LD.mode('A', { TokenA: { pattern: 'A', line_breaks: true }})
         LD.mode('B', {})
         LD.build()
@@ -98,7 +98,7 @@ describe('Lexdoc', function() {
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
       numbers.forEach((number)=> {
         LD = new Lexdoc()
-        LD.setDefault('A')
+        LD.defaultMode('A')
         for (let count = 0; count < number; count++) {
           const letter = letters[count]
           const doc = {}
@@ -120,7 +120,7 @@ describe('Lexdoc', function() {
         TC: { pattern: 'C', line_breaks: true },
         TD: /D/
       })
-      LD.setDefault('ModeA')
+      LD.defaultMode('ModeA')
       const lexer = LD.build()
       expect(Object.keys(lexer.tokens).length).toEqual(4)
       expect(lexer.tokens.TA.tokenName).toEqual('TA')
