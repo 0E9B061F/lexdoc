@@ -3,18 +3,38 @@
   "version": "1.0.0",
   "description": "Simplified token definition and lexer creation library for use with Chevrotain.",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "lib/"
+  ],
+  "directories": {
+    "lib": "./lib",
+    "example": "./example",
+    "test": "./spec"
+  },
   "scripts": {
     "test": "bin/jasmine"
   },
   "keywords": [
     "lexer",
+    "lexer-generator",
     "parser",
-    "token",
+    "tokenizer",
     "chevrotain"
   ],
   "author": {
     "name": "Abacus Lever",
+    "email": "aetherised@gmail.com",
+    "url": "https://github.com/aetherised"
+  },
+  "repository": "github:aetherised/lexdoc",
+  "bugs": {
+    "url": "https://github.com/aetherised/lexdoc/issues",
     "email": "aetherised@gmail.com"
+  },
+  "homepage": "https://github.com/aetherised/lexdoc",
+  "engines": {
+    "npm": ">=8.9.4"
   },
   "license": "MIT",
   "dependencies": {
