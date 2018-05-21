@@ -1,7 +1,7 @@
 'use strict'
 
-const Errors = require('../lib/errors.js')
 const { Lexdoc } = require('../lib/lexdoc.js')
+const Errors = require('../lib/errors.js')
 const XRegExp = require('xregexp')
 
 
