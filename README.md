@@ -5,7 +5,8 @@
 [![dependencies](https://david-dm.org/aetherised/lexdoc.svg?style=flat-square)](https://david-dm.org/aetherised/lexdoc)
 [![maintenance](https://img.shields.io/maintenance/yes/2018.svg?style=flat-square)](https://github.com/aetherised/lexdoc/commits/master)
 
-Simplified token definition and lexer creation library for use with the [Chevrotain][chevrotain] parser building toolkit.
+**Simplified token definition and lexer creation library** for use with the
+[Chevrotain][chevrotain] parser building toolkit.
 
 Example:
 
@@ -35,11 +36,14 @@ const JsonLexer = LD.build({
 
 JsonLexer.instance // Stores the Chevrotain Lexer instance that was created
 
-JsonLexer.tokens   // An object containing the created tokens
-
 JsonLexer.lex(str) // Tokenize the given string. Wrapper around the created
                    // Lexer instance's #tokenize method, with built-in error
                    // handling.
+
+JsonLexer.tokens        // An object containing the created tokens
+
+JsonLexer.tokens.LCurly // Referencing a token
+
 ```
 
 # Installation
@@ -82,17 +86,15 @@ representing the token's name, rather than a direct reference to the created
 token object. This has two advantages:
 
 * Tokens can be referenced before they are defined.
-* Tokens are defined in order of lexing precedence, rather than in order of dependence,
-with their order of precedence then specified separately.
+* Tokens are defined in order of lexing precedence; order of precedence doesn't
+  have to be specified separately.
 
 Examples:
 
 ```js
 LD.build({
-  // Categories are defined using LD.CATEGORY, a more semantic synonym for
-  // Chevrotain's Lexer.NA
-  Boolean: LD.CATEGORY,
-  Value:   LD.CATEGORY,
+  Boolean: LD.CATEGORY, // Categories are defined using LD.CATEGORY, a more
+  Value:   LD.CATEGORY, // semantic synonym for Chevrotain's Lexer.NA
 
   // Reserved words
   True: {
@@ -124,7 +126,7 @@ Using Chevrotain:
 
 ```js
 // Identifier must be defined before Select or From so it can be referenced by
-// them
+// them.
 const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z]\w*/ })
 
 const Select = createToken({
@@ -138,11 +140,11 @@ const From = createToken({
     longer_alt: Identifier
 })
 
-// The order in which tokens will be lexed must be specified separately
+// The order in which tokens will be lexed must be specified separately.
 const tokens = [
   Select,
   From,
-  Identifier
+  Identifier // Identifier must be lexed after Select and From
 ]
 
 const lexer = new Lexer(tokens)
@@ -165,7 +167,7 @@ const lexer = LD.build({
 })
 ```
 
-## Mult-mode Lexers
+## Multi-mode Lexers
 
 Multi-mode lexers are supported by **Lexdoc**:
 
@@ -188,7 +190,7 @@ const lexer = LD.build()
 
 ## Built-in XRegExp DSL
 
-Lexdoc has a built-in XRegExp DSL, as seen in many of Chevrotain's examples,
+**Lexdoc** has a built-in XRegExp DSL, as seen in many of Chevrotain's examples,
 allowing for reuse of patterns.
 
 Example usage:
