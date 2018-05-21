@@ -1,6 +1,6 @@
 {
   "name": "lexdoc",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -47,9 +47,9 @@
       }
     },
     "chevrotain": {
-      "version": "3.2.1",
-      "resolved": "https://registry.npmjs.org/chevrotain/-/chevrotain-3.2.1.tgz",
-      "integrity": "sha512-o3MDITwueSRPXmYzWkQOW9gdBosB3g4BcuDdjV8YNUZIKaBTImVIhmUBp33gGiWXfZPjsvb/rR7Gl/L/lfRYJg==",
+      "version": "3.3.0",
+      "resolved": "https://registry.npmjs.org/chevrotain/-/chevrotain-3.3.0.tgz",
+      "integrity": "sha512-NXDOQMPgO6DWBexhmwG9fPVGHvb0z1tF+evNR0XdPGns+rwMcLKH6NmITYNl6ukjgIntn5n4Nvf7gF9mhz3X7g==",
       "requires": {
         "regexp-to-ast": "0.2.2"
       }
