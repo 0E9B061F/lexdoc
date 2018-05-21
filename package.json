@@ -1,7 +1,7 @@
 {
   "name": "lexdoc",
   "version": "1.0.0",
-  "description": "A library to simplify lexer definition using Chevrotain.",
+  "description": "Simplified token definition and lexer creation library for use with Chevrotain.",
   "main": "index.js",
   "scripts": {
     "test": "bin/jasmine"
