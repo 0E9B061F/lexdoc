@@ -45,15 +45,24 @@ npm install lexdoc
 
 ## Shortened Definitions for Simple Tokens
 
-Tokens can be defined using a pattern only if they have no other properties:
+Tokens which have only a pattern and no other properties can be defined using
+only their pattern, simplifying many token definitions.
 
 ```js
 // Using the Chevrotain #createToken API:
-const Text = createToken({ name: "Text", pattern: /[^,\n\r"]+/ })
+const True = createToken({ name: "True", pattern: /true/ })
+const False = createToken({ name: "False", pattern: /false/ })
+const Null = createToken({ name: "Null", pattern: /null/ })
+const LCurly = createToken({ name: "LCurly", pattern: /{/ })
+const RCurly = createToken({ name: "RCurly", pattern: /}/ })
 
 // Using Lexdoc
 LD.build({
-  Text: /[^,\n\r"]+/
+  True:   /true/,
+  False:  /false/,
+  Null:   /null/,
+  LCurly: /{/,
+  RCurly: /}/
 })
 ```
 
