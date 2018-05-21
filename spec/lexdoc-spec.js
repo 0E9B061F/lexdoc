@@ -67,7 +67,6 @@ describe('Lexdoc', function() {
     it('should require at least two modes', function() {
       function onemode() {
         LD.mode('A', { TokenA: 'A' })
-        LD.defaultMode('A')
         LD.build()
       }
       expect(onemode).toThrowError(Errors.BuildError)
@@ -85,7 +84,6 @@ describe('Lexdoc', function() {
 
     it('should reject modes definitions with no tokens', function() {
       function emptyMode() {
-        LD.defaultMode('A')
         LD.mode('A', { TokenA: { pattern: 'A', line_breaks: true }})
         LD.mode('B', {})
         LD.build()
@@ -98,7 +96,6 @@ describe('Lexdoc', function() {
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
       numbers.forEach((number)=> {
         LD = new Lexdoc()
-        LD.defaultMode('A')
         for (let count = 0; count < number; count++) {
           const letter = letters[count]
           const doc = {}
@@ -120,7 +117,6 @@ describe('Lexdoc', function() {
         TC: { pattern: 'C', line_breaks: true },
         TD: /D/
       })
-      LD.defaultMode('ModeA')
       const lexer = LD.build()
       expect(Object.keys(lexer.tokens).length).toEqual(4)
       expect(lexer.tokens.TA.tokenName).toEqual('TA')
@@ -131,6 +127,44 @@ describe('Lexdoc', function() {
       expect(lexer.tokens.TB.PATTERN).toEqual(/B/)
       expect(lexer.tokens.TC.PATTERN).toEqual('C')
       expect(lexer.tokens.TD.PATTERN).toEqual(/D/)
+    })
+
+    it('should use the first mode as the default mode if not otherwise specified', function() {
+      LD.mode('ModeA', {
+        TA: { pattern: 'A', line_breaks: true },
+        TB: /B/
+      })
+      LD.mode('ModeB', {
+        TC: { pattern: 'C', line_breaks: true },
+        TD: /D/
+      })
+      expect(LD.__FD.defaultModeName).toBe('ModeA')
+    })
+
+    it('should not overwrite an explicitly set default mode', function() {
+      LD.defaultMode('ModeB')
+      LD.mode('ModeA', {
+        TA: { pattern: 'A', line_breaks: true },
+        TB: /B/
+      })
+      LD.mode('ModeB', {
+        TC: { pattern: 'C', line_breaks: true },
+        TD: /D/
+      })
+      expect(LD.__FD.defaultModeName).toBe('ModeB')
+    })
+
+    it('should allow the user to explicitly set a default mode', function() {
+      LD.mode('ModeA', {
+        TA: { pattern: 'A', line_breaks: true },
+        TB: /B/
+      })
+      LD.mode('ModeB', {
+        TC: { pattern: 'C', line_breaks: true },
+        TD: /D/
+      })
+      LD.defaultMode('ModeB')
+      expect(LD.__FD.defaultModeName).toBe('ModeB')
     })
   })
 
