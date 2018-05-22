@@ -245,13 +245,6 @@ describe('JSON example', function() {
     const file = fs.readFileSync(filePath, { encoding: 'utf-8' })
     const out = json(file)
 
-    expect(out).toEqual({
-      foo: 1,
-      bar: 'B',
-      baz: [1, 2, 'c'],
-      bat: { x: 101, y: 102 },
-      e1: [],
-      e2: {}
-    })
+    expect(out).toEqual(require(filePath))
   })
 })
