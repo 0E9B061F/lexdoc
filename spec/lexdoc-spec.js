@@ -1,15 +1,17 @@
 'use strict'
 
+const chevrotain = require('chevrotain')
+const XRegExp = require('xregexp')
+
 const { Lexdoc } = require('../lib/lexdoc.js')
 const Errors = require('../lib/errors.js')
-const XRegExp = require('xregexp')
 
 
 describe('Lexdoc', function() {
   let LD
 
   beforeEach(function() {
-    LD = new Lexdoc()
+    LD = new Lexdoc(chevrotain)
   })
 
   describe('Single mode', function() {
@@ -95,7 +97,7 @@ describe('Lexdoc', function() {
       const numbers = [2,3,4,10,20]
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
       numbers.forEach((number)=> {
-        LD = new Lexdoc()
+        LD = new Lexdoc(chevrotain)
         for (let count = 0; count < number; count++) {
           const letter = letters[count]
           const doc = {}

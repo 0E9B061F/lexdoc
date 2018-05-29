@@ -6,8 +6,10 @@
 //   <https://github.com/SAP/chevrotain/blob/master/NOTICE.txt>
 //   Chevrotain is copyright (c) 2015-2018 SAP SE or an SAP affiliate company.
 
-const { Parser } = require('chevrotain')
-const LD = require('../../index.js')
+const chevrotain = require('chevrotain')
+const Parser = chevrotain.Parser
+
+const LD = require('../../index.js')(chevrotain)
 
 
 const JsonLexer = LD.build({

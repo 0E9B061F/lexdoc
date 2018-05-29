@@ -3,4 +3,6 @@
 const { Lexdoc } = require('./lib/lexdoc.js')
 
 
-module.exports = new Lexdoc()
+module.exports = function(chevrotain) {
+  return new Lexdoc(chevrotain)
+}

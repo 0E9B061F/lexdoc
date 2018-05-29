@@ -11,7 +11,8 @@
 Example:
 
 ```js
-const LD = require('lexdoc')
+const chevrotain = require('chevrotain')
+const LD = require('lexdoc')(chevrotain)
 
 const JsonLexer = LD.build({
   WhiteSpace: {
