@@ -6,6 +6,8 @@ const XRegExp = require('xregexp')
 const { Lexdoc } = require('../lib/lexdoc.js')
 const Errors = require('../lib/errors.js')
 
+const validate = require('../lib/validate.js')
+
 
 describe('Lexdoc', function() {
   let LD
@@ -235,6 +237,34 @@ describe('Lexdoc', function() {
       expect(lexer.tokens.TA.PATTERN.test('1foo2bar3')).toBe(true)
       expect(lexer.tokens.TB.PATTERN.test('foobarbaz')).toBe(true)
     })
+  })
+})
+
+describe('Chevrotain API validator', function() {
+  it('should validate a compliant version of Chevrotain', function() {
+    function shouldval() { validate(chevrotain) }
+
+    expect(shouldval).not.toThrow()
+  })
+
+  it('should validate an object which appears to be a compliant version of Chevrotain', function() {
+    function likeADuck() { validate({ Lexer: { NA: true, SKIPPED: true }, createToken: true }) }
+
+    expect(likeADuck).not.toThrow()
+  })
+
+  it('should not validate noncompliant objects', function() {
+    function empty() { validate({}) }
+    function partialA() { validate({ Lexer: true, createToken: true }) }
+    function partialB() { validate({ Lexer: { NA: true }, createToken: true }) }
+    function partialC() { validate({ Lexer: { NA: true, SKIPPED: true }}) }
+    function partialD() { validate({ createToken: true }) }
+
+    expect(empty).toThrowError(Errors.ValidationError)
+    expect(partialA).toThrowError(Errors.ValidationError)
+    expect(partialB).toThrowError(Errors.ValidationError)
+    expect(partialC).toThrowError(Errors.ValidationError)
+    expect(partialD).toThrowError(Errors.ValidationError)
   })
 })
 
