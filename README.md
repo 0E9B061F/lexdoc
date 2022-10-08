@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/lexdoc.svg?style=flat-square)](https://www.npmjs.com/package/lexdoc)
 [![license](https://img.shields.io/github/license/0E9B061F/lexdoc.svg?style=flat-square)][license]
-[![maintenance](https://img.shields.io/maintenance/yes/2018.svg?style=flat-square)](https://github.com/0E9B061F/lexdoc/commits/master)
+[![maintenance](https://img.shields.io/maintenance/yes/2022.svg?style=flat-square)](https://github.com/0E9B061F/lexdoc/commits/master)
 
 **Simplified token definition and lexer creation library** for use with the
 [Chevrotain][chevrotain] parser building toolkit.
