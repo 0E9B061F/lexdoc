@@ -1,9 +1,8 @@
 # lexdoc
 
 [![npm](https://img.shields.io/npm/v/lexdoc.svg?style=flat-square)](https://www.npmjs.com/package/lexdoc)
-[![license](https://img.shields.io/github/license/aetherised/lexdoc.svg?style=flat-square)][license]
-[![dependencies](https://david-dm.org/aetherised/lexdoc.svg?style=flat-square)](https://david-dm.org/aetherised/lexdoc)
-[![maintenance](https://img.shields.io/maintenance/yes/2018.svg?style=flat-square)](https://github.com/aetherised/lexdoc/commits/master)
+[![license](https://img.shields.io/github/license/0E9B061F/lexdoc.svg?style=flat-square)][license]
+[![maintenance](https://img.shields.io/maintenance/yes/2018.svg?style=flat-square)](https://github.com/0E9B061F/lexdoc/commits/master)
 
 **Simplified token definition and lexer creation library** for use with the
 [Chevrotain][chevrotain] parser building toolkit.
@@ -238,11 +237,11 @@ class JsonParser extends Parser {
 
     // Rules ...
 
-    Parser.performSelfAnalysis(this)
+    this.performSelfAnalysis()
   }
 }
 
-const parser = new JsonParser([])
+const parser = new JsonParser(JsonLexer.tokens)
 
 module.exports = function(text) {
   const lexResult = JsonLexer.lex(text) // Actual usage of the lexer
@@ -257,10 +256,10 @@ module.exports = function(text) {
 
 Available under the terms of the [MIT license.][license]
 
-Copyright 2018 [Abacus Lever / @aetherised][alever]
+Copyright 2022 [0E9B061F][gh]
 
 
-[alever]:https://github.com/aetherised
-[license]:https://github.com/aetherised/lexdoc/blob/master/LICENSE
+[gh]:https://github.com/0E9B061F
+[license]:https://github.com/0E9B061F/lexdoc/blob/master/LICENSE
 [chevrotain]:https://github.com/SAP/chevrotain
-[json-example]:https://github.com/aetherised/lexdoc/blob/master/example/json/json.js
+[json-example]:https://github.com/0E9B061F/lexdoc/blob/master/example/json/json.js

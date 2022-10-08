@@ -7,7 +7,7 @@
 //   Chevrotain is copyright (c) 2015-2018 SAP SE or an SAP affiliate company.
 
 const chevrotain = require('chevrotain')
-const Parser = chevrotain.Parser
+const Parser = chevrotain.EmbeddedActionsParser
 
 const LD = require('../../index.js')(chevrotain)
 
@@ -119,11 +119,11 @@ class JsonParser extends Parser {
       return val
     })
 
-    Parser.performSelfAnalysis(this)
+    this.performSelfAnalysis()
   }
 }
 
-const parser = new JsonParser([])
+const parser = new JsonParser(JsonLexer.tokens)
 
 module.exports = function(text) {
   const lexResult = JsonLexer.lex(text)

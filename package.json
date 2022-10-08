@@ -1,6 +1,6 @@
 {
   "name": "lexdoc",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Simplified token definition and lexer creation library for use with Chevrotain.",
   "main": "index.js",
   "files": [
@@ -23,16 +23,16 @@
     "chevrotain"
   ],
   "author": {
-    "name": "Abacus Lever",
-    "email": "aetherised@gmail.com",
-    "url": "https://github.com/aetherised"
+    "name": "0E9B061F",
+    "email": "0E9B061F@protonmail.com",
+    "url": "https://github.com/0E9B061F"
   },
-  "repository": "github:aetherised/lexdoc",
+  "repository": "github:0E9B061F/lexdoc",
   "bugs": {
-    "url": "https://github.com/aetherised/lexdoc/issues",
-    "email": "aetherised@gmail.com"
+    "url": "https://github.com/0E9B061F/lexdoc/issues",
+    "email": "0E9B061F@protonmail.com"
   },
-  "homepage": "https://github.com/aetherised/lexdoc",
+  "homepage": "https://github.com/0E9B061F/lexdoc",
   "engines": {
     "npm": ">=8.9.4"
   },
@@ -41,7 +41,7 @@
     "xregexp": "^4.1.1"
   },
   "peerDependencies": {
-    "chevrotain": "~3"
+    "chevrotain": "~10"
   },
   "devDependencies": {
     "jasmine": "^3.1.0",
