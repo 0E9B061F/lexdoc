@@ -1,6 +1,6 @@
 {
   "name": "lexdoc",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Simplified token definition and lexer creation library for use with Chevrotain.",
   "main": "index.js",
   "files": [
@@ -38,13 +38,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "xregexp": "^4.1.1"
+    "xregexp": "^5.1.1"
   },
   "peerDependencies": {
     "chevrotain": "~10"
   },
   "devDependencies": {
-    "jasmine": "^3.1.0",
-    "jasmine-console-reporter": "^3.0.2"
+    "jasmine": "^5.3.1",
+    "jasmine-console-reporter": "^3.1.0"
   }
 }
